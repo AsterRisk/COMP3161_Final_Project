@@ -5,47 +5,37 @@
 </head>
 <body>
     <?php
-        session_start();
-        //include 'login.php';
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        
-        $conn = new mysqli($servername, $username, $password);
-        if ($conn->connect_error)
-        {
-            die("Connection to database failed: " . $conn->connect_error);
-        }
-        else
-        {
+            include 'sql_setup.php';
             //echo $_SESSION['id'];
-            $sql = "use final_proj_3161;";
-            $conn->prepare($sql);
-            $conn->query($sql);
-            $sql = "select users.user_id, first_name, last_name, fgroup from users join friends where ((users.user_id = friends.friend_id) and friends.user_id = ".$_SESSION['id'].");";
+            
+            //echo($sql);
+    ?>  
+            <h3>Tell us what's happening!</h3>
+            <form id = 'post_to_wall' method = 'POST' action = "posting.php">
+                <textarea id = 'text_content' name = 'text_content' rows = '5' cols = '60'></textarea>
+                <br>
+                <input type = 'submit' value = 'Post!'>
+            </form>
+            <h1>TIMELINE</h1>
+            <br>
+            <br>
+            
+    <?php
+            
+            $sql = "select post_id, posts.user_id, text_content, media_link, fgroup from posts join friends where posts.user_id = friends.friend_id and friends.user_id =". $_SESSION['id']." order by post_id desc;";
+    
             //echo $sql;
             $conn->prepare($sql);
             $results = $conn->query($sql);
-            //var_dump($results);
-            //echo($sql);
-    ?>
-            <h1>FRIENDS LIST:</h1>
-            <br>
-            <br>
-            <table>
-                <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Group</th>
-                </tr>
-    <?php
-            
-            foreach($results as $row)
+            foreach($results as $post)
             {
-                $text = "<tr> ". "<td> ". $row['first_name'] ." </td>". " <td> ". $row['last_name'] ." </td><td> ". $row['fgroup'] ." </td></tr> ";
-                echo $text; 
+                $sql = "select first_name, last_name from users where user_id = " .$post['user_id'];
+                $conn->prepare($sql);
+                $names = $conn->query($sql)->fetch_assoc();
+                echo "<b>".$names['first_name'] . " " . $names['last_name'] . "</b><br>";
+                echo "<pre>      " . $post['text_content'] . "</pre>";
+                echo "<form method = 'post' class = 'commenting' action = 'comment.php'>";
+                echo "<input type = 'text' id = 'comment". $post['post_id'] ."' class = 'comment' name = 'comment' placeholder = 'Write a comment...'><input type = 'submit' value = 'Comment' id = 'comment-button'><br><br><br>";
             }
-        }
     ?>
-    </table>
 </body>

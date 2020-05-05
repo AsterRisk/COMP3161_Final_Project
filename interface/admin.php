@@ -9,17 +9,7 @@
 </head>
 <body>
     <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        
-        $conn = new mysqli($servername, $username, $password);
-        if ($conn->connect_error)
-        {
-            die("Connection to database failed: " . $conn->connect_error);
-        }
-        else
-        {
+            include 'sql_setup'.php;
             echo "<h3>Registered SocialBook Users:</h3><br><br>";
             
             $sql = "use final_proj_3161;";
@@ -45,12 +35,11 @@
                             echo $text; 
                        }
                     }
+                    echo "<br><br>Registered users: " . $results->num_rows;
                 ?>
                 
             </table>
     <?php        
-
-        }
         $conn->close();
     ?>
 </body>

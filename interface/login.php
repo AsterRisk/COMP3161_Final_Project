@@ -9,20 +9,7 @@
 </head>
 <body>
     <?php
-        $servername = "localhost";
-        $username = "root";
-        $password = "";
-        
-        $conn = new mysqli($servername, $username, $password);
-        if ($conn->connect_error)
-        {
-            die("Connection to database failed: " . $conn->connect_error);
-        }
-        else
-        {
-            $sql = "use final_proj_3161;";
-            $conn->prepare($sql);
-            $conn->query($sql);
+            include 'sql_setup.php';
             $sql = "select*from logins where email = '".htmlspecialchars($_POST['user_email'])."';";
             $conn->prepare($sql);
             $results = $conn->query($sql);
@@ -61,4 +48,6 @@
                 //echo "<h1>USERNAME NOT FOUND!</h1>";
             }
             
-        }
+        ?>
+    </body>
+</html>
