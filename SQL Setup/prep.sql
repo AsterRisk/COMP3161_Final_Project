@@ -60,7 +60,7 @@ create table posts
     post_id int not null UNIQUE,
     user_id int not null,
     text_content varchar(300),
-    media_link varchar(30),
+    media_link varchar(70),
     /*foreign key (user_id) references users,*/
     primary key (post_id)
 );

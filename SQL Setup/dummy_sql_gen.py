@@ -135,40 +135,43 @@ alnum = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', '
 groups = ["Work", "Relatives", "School"]
 
 def genPersonSQL(user_id):
-    fptr = open("dummy_sql_1.sql", "a")
-    fptr2 = open("raw_pass_1.txt", "a")
-    gender = math.floor(random.random()*10000000000000)%2
-    if gender == 1:
-        fName = male_firsts[math.floor(random.random() * len(male_firsts))]
-    else:
-        fName = female_firsts[math.floor(random.random() * len(female_firsts))]
-    lName = lasts[math.floor(random.random() * len(lasts))]
-    address_num = math.floor(random.random() *1000)
-    address_prefix = street_prefixes[math.floor(random.random() * len(street_prefixes))]
-    address_suffix = street_suffixes[math.floor(random.random() * len(street_suffixes))]
-    address = str(address_num) + " " + address_prefix + " " + address_suffix
-    tele = "(876) "
-    tele += digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))] + "-" + digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))]+ digits[math.floor(random.random()*len(digits))]
+	fptr = open("dummy_sql_1.sql", "a")
+	fptr2 = open("raw_pass_1.txt", "a")
+	gender = math.floor(random.random()*10000000000000)%2
+	if gender == 1:
+		fName = male_firsts[math.floor(random.random() * len(male_firsts))]
+	else:
+		fName = female_firsts[math.floor(random.random() * len(female_firsts))]
+	lName = lasts[math.floor(random.random() * len(lasts))]
+	address_num = math.floor(random.random() *1000)
+	address_prefix = street_prefixes[math.floor(random.random() * len(street_prefixes))]
+	address_suffix = street_suffixes[math.floor(random.random() * len(street_suffixes))]
+	address = str(address_num) + " " + address_prefix + " " + address_suffix
+	tele = "("
+	tele += random.choice(digits) + random.choice(digits) + random.choice(digits) + ")" + digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))] + "-" + digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))] + digits[math.floor(random.random()*len(digits))]+ digits[math.floor(random.random()*len(digits))]
     #print("Name: " + fName + " " + lName)
     #print("Lives at: " + str(address_num) + " " + address_prefix + " " + address_suffix)
     #print("Telephone: " + tele)
-    email = fName.lower() + "." + lName.lower() + "@" + email_domains[math.floor(random.random() * len(email_domains))]
-    password = ''.join(random.choice(alnum) for i in range(15))
-    pass_digest = hashlib.sha256(password.encode()).hexdigest()
-    salt = random.randint(1, 10000)
-    dob = str(random.randint(1960, 2002)) + "/" + str(random.randint(1, 12)) + "/" + str(random.randint(1, 28)) 
-    fptr.write("insert into users (user_id, first_name, last_name, tele_num, home_address, email, dob, clearance) values ('" + str(user_id) + "', '" + fName + "', '" + lName + "', '" + tele + "', '" + address + "', '" + email + "', '" + dob + "', 2);\n")
-    fptr.write("insert into logins (user_id, email, pass_digest, salt) values ('" + str(user_id) + "', '" + email + "', '" + str(pass_digest) + "', '" + str(salt) + "');\n")
-    fptr2.write("\n\nUserID: +" + str(user_id) + "\nEmail_Address: " + email + "\nPass: " + password + "\nSalt: " + str(salt))
-    fptr.close()
-    fptr2.close()
+	email = fName.lower() + "." + lName.lower() + "@" + email_domains[math.floor(random.random() * len(email_domains))]
+	password = ''.join(random.choice(alnum) for i in range(15)) 
+	salt = random.randint(1, 10000)
+	pass_buff = password
+	password += str(salt)
+	pass_digest = hashlib.sha256(password.encode()).hexdigest()
+	dob = str(random.randint(1960, 2002)) + "/" + str(random.randint(1, 12)) + "/" + str(random.randint(1, 28)) 
+	fptr.write("insert into users (user_id, first_name, last_name, tele_num, home_address, email, dob, clearance) values ('" + str(user_id) + "', '" + fName + "', '" + lName + "', '" + tele + "', '" + address + "', '" + email + "', '" + dob + "', 2);\n")
+	fptr.write("insert into logins (user_id, email, pass_digest, salt) values ('" + str(user_id) + "', '" + email + "', '" + str(pass_digest) + "', '" + str(salt) + "');\n")
+	fptr2.write("\n\nUserID: +" + str(user_id) + "\nEmail_Address: " + email + "\nPass: " + pass_buff + "\nSalt: " + str(salt))
+	fptr.close()
+	fptr2.close()
 
 def generateFriend(x, y):
-    fptr = open("dummy_sql_1.sql", "a")
-    group = random.choice(groups)
-    fptr.write("insert into friends (user_id, friend_id, fgroup) values('" + str(x) + "', '" + str(y) + "', '" + group +"');\n")
-    fptr.write("insert into friends (user_id, friend_id, fgroup) values('" + str(y) + "', '" + str(x) + "', '" + group +"');\n")
-    fptr.close()
+	fptr = open("dummy_sql_1.sql", "a")
+	group = random.choice(groups)
+	
+	fptr.write("insert into friends (user_id, friend_id, fgroup) values('" + str(x) + "', '" + str(y) + "', '" + group +"');\n")
+	fptr.write("insert into friends (user_id, friend_id, fgroup) values('" + str(y) + "', '" + str(x) + "', '" + group +"');\n")
+	fptr.close()
 
 if __name__ == "__main__":
 	startTime = datetime.now()
@@ -182,13 +185,16 @@ if __name__ == "__main__":
 	fptr3.close()
 	fptr2 = open("raw_pass_1.txt", "w")
 	
-	fptr.write("insert into users (user_id, first_name, last_name, tele_num, home_address, email, dob, clearance) values ('0', 'Admin', 'Dude', '(876)000-0000', '-----------', 'admin@admin.com', '0000/00/00', 1);\n")
+	fptr.write("insert into users (user_id, first_name, last_name, tele_num, home_address, email, dob, clearance) values ('0', 'Admin', 'Dude', '(000) 000-0000', '-----------', 'admin@admin.com', '0000/00/00', 1);\n")
 	fptr.write("insert into logins (user_id, email, pass_digest, salt) values ('0', 'admin@admin.com', '6fe5a7a2830877415d67df5f13454ecd3ce16c6e01e66f011e3fa0a50242c754', '1234');\n")
 	fptr.close()
 	fptr2.close()
 	for x in range(int(sys.argv[1])):
 		genPersonSQL(x + 1)
-		for y in range(x+2, x+5):
+		fptr = open("dummy_sql_1.sql", "a")
+		fptr.write("insert into friends (user_id, friend_id, fgroup) values('" + str(x+1) + "', '" + str(x+1) + "', 'SELF');\n")
+		fptr.close()
+		for y in range(x+2, x+6):
 			generateFriend(x+1, (y%int(sys.argv[1])))
 		print(x+1)
 	endtime = datetime.now()
