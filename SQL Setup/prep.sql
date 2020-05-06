@@ -69,7 +69,7 @@ create table posts
 create table media
 (
     user_id int not null,
-    media_link varchar(30) not null unique,
+    media_link varchar(70) not null unique,
     primary key (media_link)
 );
 
