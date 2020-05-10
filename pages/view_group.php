@@ -3,7 +3,11 @@
     <head>
         <link rel="icon" href="../assets/default_imgs/logo.png">
         <link rel="shortcut icon" href="../assets/default_imgs/logo.png">
-        <?php include 'header.php'; ?>
+        <?php include 'header.php';
+                $sql = "select member_id from members where group_id = " . $_GET['group_id'] ." and member_id = " . $_SESSION['id'] . ";";
+                $conn->prepare($sql);
+                $isMember = $conn->query($sql)->num_rows;;
+        ?>
         
     </head>
     <body>
@@ -120,7 +124,7 @@
                     <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
                      <?php
                         $pppa = $poster_data['profile_pic_address'];
-                        if(($pppa === NULL) || (strcasecmp($fppa, "null") == 0))
+                        if(($pppa === NULL) || (strcasecmp($pppa, "null") == 0))
                         {
                             $pppa = "../assets/default_imgs/default_profile_picture.png";
                         }
@@ -164,9 +168,7 @@
                             ?>
                             <form method = 'post' class = 'commenting' action = 'group_comment.php'>
                             <?php
-                                $sql = "select member_id from members where group_id = " . $_GET['group_id'] ." and member_id = " . $_SESSION['id'] . ";";
-                                $conn->prepare($sql);
-                                $isMember = $conn->query($sql)->num_rows;
+                                
                                 if($isMember)
                                 {
                                     $comment = "<hr class = 'w3-clear'>\n<div class = 'w3-container w3-padding w3-card w3-white' style = 'margin-bottom:10px;margin-top:10px;'>\n<br>\n<span style = \"display:inline;\"><h5 class = 'w3-opacity'>Write a comment...</h5>\n\n<input type = 'text' id = 'comment|". $gp['group_id'] ."' class = 'w3-padding w3-border comment' name = 'comment'  style = 'width:80%'>" . "<input type = 'text' id = 'hidden|". $gp['group_id'] ."' class = 'post_identifier' name = 'group_id' hidden = 'true' value = ". $gp['group_id'] .">\n<input type = 'text' id = 'hidden|". $gp['g_post_id'] ."' class = 'post_identifier' name = 'g_post_id' hidden = 'true' value = ". $gp['g_post_id'] .">";
@@ -188,8 +190,37 @@
             
         </div>
         </div>
+        <div class="w3-col m2">
+      <br>
+      
+      <div class="w3-card w3-round w3-white w3-center">
+        <div class="w3-container" style = "margin-top:-18px;">
+          
+            <?php
+                //echo $isMember;
+                if(!$isMember)
+                {
+                    echo '<h4 style = "margin-top:6px;"><b>Join Group?</b></h4>';
+                    echo "<form class = 'group_join' method = 'POST' action = 'join_group.php'>";
+                    echo "<input type = \"text\" value = " . $_GET['group_id'] . " name = 'group_id' hidden = true>";
+                    
+                    echo "<button class=\"w3-button w3-block w3-green w3-section fr_accept\" title=\"Join this group\"><i class=\"fa fa-check\" type = \"submit\"></i></button>";
+                    echo "</form>";
+                }
+                
+                
+                
+            ?>
             </div>
+                         
         </div>
+                     
+        </div>
+      </div>
+      <br>
+      
+    <!-- End Right Column -->
+    </div>
     </body>
     <footer>
         unset($sql);

@@ -30,8 +30,15 @@
          <h4 class="w3-center" style = "margin-top:15px;">My Profile</h4>
          <p class="w3-center">
             <?php
-                $img = "<img src='". $ppa . "' class=\"w3-circle\" style=\"height:200px;width:200px\" alt=\"Avatar\">";
-                echo $img;
+                if(strcmp($ppa, '..assets/default_imgs/default_profile_picture.png') != 0)
+                    {
+                        $img = "<a href = \"modify_profile.php\"><img src='". $ppa . "' class=\"w3-circle\" style=\"height:200px;width:200px\" alt=\"Avatar\" title = 'Modify my Profile'></a>";
+                    }
+                    else
+                    {
+                        $img = "<a href = \"modify_profile.php\"><img src='..assets/default_imgs/default_profile_picture.png' class=\"w3-circle\" style=\"height:200px;width:200px\" alt=\"Avatar\" tooltip = 'Modify my Profile'></a>";
+                    }
+                    echo $img;
              ?>
         </p>
          <hr>
@@ -201,14 +208,20 @@
     <!-- Right Column -->
     <div class="w3-col m2">
       <br>
-      
-      <div class="w3-card w3-round w3-white w3-center">
+        
+      <?php
+        $sql = "select user_id, first_name, last_name, profile_pic_address, requester_id, requestee_id from users join friend_requests where user_id = requester_id and requestee_id = " . $_SESSION['id'] . ";";
+        $conn->prepare($sql);
+        $friendReqs = $conn->query($sql);
+        if($friendReqs->num_rows)
+        {
+            ?>
+        
+            <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container" style = "margin-top:-18px;">
-          <h4 style = "margin-top:6px;"><b>Friend Requests:</b></h4>
+          <h4 style = "margin-top:6px;"><b>New Friend Requests:</b></h4>
             <?php
-                $sql = "select user_id, first_name, last_name, profile_pic_address, requester_id, requestee_id from users join friend_requests where user_id = requester_id and requestee_id = " . $_SESSION['id'] . ";";
-                $conn->prepare($sql);
-                $friendReqs = $conn->query($sql);
+                
                 foreach($friendReqs as $request)
                 {
                     if(($post['media_link'] != NULL) && ((strcasecmp($post['media_link'], "NULL")) != 0))
@@ -262,6 +275,11 @@
             ?>   
         </div>
       </div>
+        
+      <?php
+        }
+      ?>
+      
       <br>
       
     <!-- End Right Column -->

@@ -17,12 +17,8 @@
     <style>
     html, body, h1, h2, h3, h4, h5 {font-family: "Open Sans", sans-serif}
     </style>
-    <script>
-      function assign(id){
-        console.log(id);
-      }
-    </script>
 </head>
+
 <body>
   <?php
     $servername = "localhost";
@@ -40,41 +36,30 @@
     session_start();
     // include 'header.php';
     include 'sql_setup.php';
-    echo "<h3>Registered SocialBook Users:</h3><br><br>";
 
     $sql = "use final_proj_3161;";
     $conn->prepare($sql);
     $conn->query($sql);
-    $sql = "SELECT * from users;";
+    $user_id = $_GET['user_id'];
+    $sql = "SELECT users.user_id, first_name, last_name, fgroup from users join friends where (users.user_id = friends.friend_id and friends.user_id = " . $user_id . " and friends.friend_id != ". $user_id . " ) ;";
     $conn->prepare($sql);
     $results = $conn->query($sql);
 
-    ?>
-          <table class='table'>
-              <tr>
-                  <th>User ID</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Email Address</th>
-                  <th>View Friends</th>
-              </tr>
-              <?php
-                  foreach ($results as $row)
-                  {
-                     if ($row['user_id'] != 0)
-                     {
-                        $text = "<tr><td> ". $row['user_id'] ." </td>" . "<td> ". $row['first_name'] ." </td>". " <td> ". $row['last_name'] ." </td><td> ". $row['email'] ." </td><td><form method='GET' action='admin_friends.php'><input type='text' style='display:none;' value=". $row['user_id'] ." name =
-                        'user_id'><button id='button' onclick='assign(". $row['user_id'] .")'>+</button></form></td></tr> ";
-                        echo $text;
-                     }
-                  }
-              ?>
-          </table>
-    <?php
-        echo "<br><br>Registered users: " . $results->num_rows;
-        //include 'footer.php';
-        $conn->close();
-    ?>
-</body>
+    echo "<h3>Friends For User: ". $user_id . "</h3><br><br>";
 
-</html>
+    ?>
+    <table class='table'>
+      <tr>
+        <th>User ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+      </tr>
+    <?php
+    foreach($results as $row){
+      $text = "<tr><td> ". $row['user_id'] ." </td>" . "<td> ". $row['first_name'] ." </td>". " <td> ". $row['last_name'] ." </td></tr> ";
+      echo $text;
+    }
+
+  ?>
+</table>
+</body>

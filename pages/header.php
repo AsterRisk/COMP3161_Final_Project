@@ -4,8 +4,9 @@
         $sql = "select * from users where user_id = " . $_SESSION['id'] . ";";
         $conn->prepare($sql);
         $user_data = $conn->query($sql)->fetch_assoc();
+        echo "<title>".$user_data['first_name'] . " " . $user_data['last_name']."</title>";
         ?>
-        <title><?php echo $user_data['first_name'] . " " . $user_data['last_name']; ?></title>
+        <link rel = "icon" href = "../assets/default_imgs/logo.png">
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -51,6 +52,7 @@
           <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
           </a>
          </div>
+</body>
 <?php
     
     //$_SESSION['id'] = 1001;

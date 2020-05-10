@@ -52,7 +52,7 @@
     	<input name="register_tele" class="form-control" placeholder="Phone number" type="text">
     </div> <!-- form-group// -->
     <div class="form-group input-group">
-    	<input type = "date" name = "register_birthday" class = "form-control" placeholder = "Address">
+    	<input type = "date" id = "register_birthday" name = "register_birthday" class = "form-control" placeholder = "Address">
 	</div> <!-- form-group end.// -->
     <div class="form-group input-group">
     	<input type = "text" name = "address" class = "form-control" placeholder = "Address">

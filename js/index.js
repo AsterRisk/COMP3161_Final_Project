@@ -8,8 +8,11 @@ window.onload = function(){
         let pFlag = false;
         let eFlag = false;
         let tFlag = false;
+        let dFlag = flase;
+        let today = new Date();
         let empFlag = false;
         var email = document.getElementById("register_email").value;
+        var user_dob = document.getElementById("register_birthday");
         var pass1 = document.getElementById("register_password").value;
         var pass2 = document.getElementById("double_register_password").value;
         var tele = document.getElementById("register_tele").value;
@@ -37,6 +40,10 @@ window.onload = function(){
             console.log(tele_regex);
             tFlag = true;
             //console.log(tFlag);
+        }
+        if(user_dob > now)
+        {
+            dFlag = true;
         }
         //console.log("Hey password");
         //console.log("PFLAG: " + pFlag);
@@ -73,12 +80,18 @@ window.onload = function(){
             alert("Error. Please enter an actual email address.");
             event.preventDefault();
         }
+        if (dFlag)
+        {
+            alert("Error. New users can't be born in the future.");
+            event.preventDefault();
+        }
         if(secretField !== "6eb6ac241942dc7226aeb")
         {
             alert("Tampering attempt detected. Form has not been submitted.");
             window.location.href = 'https://google.com';
             event.preventDefault();
         }
+        
         
         
     });

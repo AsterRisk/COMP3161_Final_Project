@@ -24,6 +24,7 @@
             <th>Last Name</th>
             <th>Friend Group</th>
             <th>Visit Page</th>
+            <th>Remove Friend</th>
         </tr>
         </thead>
     <?php
@@ -34,11 +35,11 @@
                {
                    if($row['profile_pic_address'] != NULL)
                    {
-                       $text = "<tr><td><img src = '". $row['profile_pic_address'] ."' style = 'height:50px;width:50px;border-radius:50%;'></td><td> ". $row['first_name'] ." </td>". " <td> ". $row['last_name'] ." </td> ". "<td> ". $row['fgroup'] ." </td> ";
+                       $text = "<tr><td  class = 'w3-section'><img src = '". $row['profile_pic_address'] ."' style = 'height:50px;width:50px;border-radius:50%;margin-top:10px;'></td><td  class = 'w3-section'> ". $row['first_name'] ." </td>". " <td  class = 'w3-section'> ". $row['last_name'] ." </td> ". "<td  class = 'w3-section'> ". $row['fgroup'] ." </td> ";
                    }
                    else
                    {
-                       $text = "<tr><td><img src = '../assets/default_imgs/default_profile_picture.png' style = 'height:50px;width:50px;border-radius:50%;'></td><td> ". $row['first_name'] ." </td>". " <td> ". $row['last_name'] ." </td> ". "<td> ". $row['fgroup'] ." </td> ";
+                       $text = "<tr><td  class = 'w3-section'><img src = '../assets/default_imgs/default_profile_picture.png' style = 'height:50px;width:50px;border-radius:50%;'></td><td  class = 'w3-section'> ". $row['first_name'] ." </td>". " <td  class = 'w3-section'> ". $row['last_name'] ." </td> ". "<td  class = 'w3-section'> ". $row['fgroup'] ." </td> ";
                    }
                    
                    echo $text; 
@@ -49,7 +50,18 @@
                             <?php
                                 $hidden = "<input type = \"text\" style = \"display:none;\" name = 'friend_id' value = ".$row['user_id'].">";
                                 echo $hidden;
-                                $bttn = "<button type = 'submit' value = 'Go to ".$row['first_name'] . " " . $row['last_name'] . "'><img src = '../assets/default_imgs/left-arrow.png' style= 'height:10px;width:10px;margin-left:15px;margin-right:15px;'></button>";
+                                $bttn = "<button class=\"w3-button w3-block w3-section\" type = 'submit' value = 'Go to ".$row['first_name'] . " " . $row['last_name'] . "' style = 'border:solid;border-color:#AAAAAA;border-width:2px;'>Visit<img src = '../assets/default_imgs/left-arrow.png' style= 'height:10px;width:10px;margin-left:6px'></button>";
+                                echo $bttn;
+                            ?>
+                        </form>
+                    </td>
+        
+                    <td>
+                        <form method = "POST" action = "remove_friend.php">
+                            <?php
+                                $hidden = "<input type = \"text\" style = \"display:none;\" name = 'friend_id' value = ".$row['user_id'].">";
+                                echo $hidden;
+                                $bttn = "<button class=\"w3-button w3-block w3-red w3-section fr_deny\" type = 'submit'>Remove <i class=\"fa fa-remove\" type = \"submit\"></i></button>";
                                 echo $bttn;
                             ?>
                         </form>
