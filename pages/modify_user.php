@@ -4,6 +4,9 @@
     $sql = "select * from logins where user_id = " . $_SESSION['id'] .";";
     $conn->prepare($sql);
     $loginData = $conn->query($sql)->fetch_assoc();
+    $sql = "select profile_pic_address from users where user_id = " . $_SESSION['id'];
+    $conn->prepare($sql);
+    $oldPFP = $conn->query($sql);
     $entered_pass_digest = (hash("sha256", ($_POST['pass'] . $loginData['salt'])));
     if(strcmp($entered_pass_digest, $loginData['pass_digest']) == 0)
     {
@@ -60,7 +63,7 @@
         $sql = "update logins set email = '" . $_POST['new_email'] . "' where user_id = " . $_SESSION['id'] . ";";
         $conn->prepare($sql);
         $success2 = $conn->query($sql);
-        if($success and $success2)
+        if($success1 and $success2)
         {
             echo "successful update.";
             header ("Location: modify_profile.php");
@@ -70,7 +73,11 @@
             ?>
             <script>
                 alert("Error, Making this change would cause duplicate values. Try something else.");
-                window.location.replace("modify_profile.php");
+                <?php
+                    echo $sql;
+                ?>
+                
+                //window.location.replace("modify_profile.php");
             </script>
 <?php
         }

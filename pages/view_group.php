@@ -60,6 +60,9 @@
           <button onclick="window.location.href='create_group.php'" class="w3-button w3-block w3-theme-l1 w3-left-align"><img src = "../assets/default_imgs/plus_sign.png" style = "margin-right:20px;height:20px;width:20px;">Create Group</button>
           <button onclick="window.location.href='friends.php'" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-users fa-fw w3-margin-right"></i>My Friends</button>
           <button onclick="window.location.href='photos.php'" class="w3-button w3-block w3-theme-l1 w3-left-align"><img src = "../assets/default_imgs/photos.png" style = "margin-right:20px;height:20px;width:20px;">My Photos</button>
+          <form method = "GET" action = "view_members.php">
+              <button type = "submit" class="w3-button w3-block w3-theme-l1 w3-left-align"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i>View Members<input type = "text" name = "group_id" style = "display:none;" value = <?php echo $_GET['group_id'] ?>></button>
+          </form>
           
         </div>      
       </div>
