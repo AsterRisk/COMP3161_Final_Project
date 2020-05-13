@@ -24,7 +24,7 @@
     <!-- Left Column -->
     <div class="w3-col m3">
       <!-- Profile -->
-      <div id = "profile info" style = "position:fixed;width:20%;">
+      <div id = "profile info" style = "width:100%;">
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
          <h4 class="w3-center" style = "margin-top:15px;">My Profile</h4>
